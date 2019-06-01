@@ -4,11 +4,16 @@ const router = express.Router();
 const passport = require("passport");
 const FileModel = require("../models/file");
 
+router.use(passport.authenticate('jwt', {session: false}));
+
 router.get("/", (req, res) => {
-  res.send("Files index");
+  FileModel.find({ userId: req.user.userId }, (error, files) =>{
+    if(error) return res.status(500).json({error: "Failed to get files"});
+
+    return res.json(files);
+  });
 });
 
-router.use(passport.authenticate('jwt', {session: false}));
 
 router.post("/new", (req, res) => {
   if (Object.keys(req.files).length == 0) {
@@ -24,7 +29,7 @@ router.post("/new", (req, res) => {
     }
 
     let fileDocument = new FileModel({
-      userId: req.user.user_id,
+      userId: req.user.userId,
       fileName: newFile.name,
       location: uploadLocation,
       size: newFile.size
