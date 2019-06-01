@@ -1,0 +1,9 @@
+Create new user account
+curl -d "username=alex&password=mypassword" -X POST http://localhost:3000/users/new
+
+Authenticate user
+curl -d "username=alex&password=mypassword" -X POST http://localhost:3000/users/auth
+
+
+Upload file named "myfile.txt"
+curl -F "file=@myfile.txt" -F "jwt=JWT" localhost:3000/files/new

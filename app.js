@@ -10,6 +10,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const passportJWT = require('passport-jwt');
 const JWTStrategy = passportJWT.Strategy;
 const bcrypt = require('bcrypt');
+const fileUpload = require('express-fileupload');
 
 // Connect to database
 mongoose.connect(config.database, { useNewUrlParser: true, useCreateIndex: true });
@@ -18,7 +19,9 @@ mongoose.connect(config.database, { useNewUrlParser: true, useCreateIndex: true 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
+app.use(fileUpload({createParentPath: true}));
 
+// Passport stuff
 passport.use(new LocalStrategy(async (username, password, done) => {
   try {
     const userDocument = await UserModel.findOne({username: username}).exec();

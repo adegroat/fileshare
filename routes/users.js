@@ -32,7 +32,7 @@ router.post('/auth', (req, res) => {
       }
 
       const payload = {
-        username: user.username,
+        userId: user._id,
         expires: Date.now() + config.JWT_EXPIRATION_MS,
       };
 
@@ -49,14 +49,15 @@ router.post('/auth', (req, res) => {
 });
 
 // Anything below will require a valid JWT
-//router.use(passport.authenticate('jwt', {session: false}));
+router.use(passport.authenticate('jwt', {session: false}));
 
-// router.get("/:uid", (req, res) => {
-//   console.log(req.params.uid);
-//   UserModel.find({_id: req.params.uid}, (error, data) => {
-//     res.json(data);
-//   });
-// });
+router.get("/", (req, res) => {
+  // console.log(req.params.uid);
+  console.log(req.user);
+  UserModel.find({}, (error, data) => {
+    res.json(data);
+  });
+});
 
 
 module.exports = router;
