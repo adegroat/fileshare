@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const FileSchema = mongoose.model('File', new mongoose.Schema({
   userId: {
     type: mongoose.Schema.ObjectId,
-    required: true
   },
   filename: {
     type: String,
