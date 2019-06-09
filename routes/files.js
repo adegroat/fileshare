@@ -5,12 +5,29 @@ const passport = require("passport");
 const FileModel = require("../models/file");
 
 const md5 = require("md5");
+const fs = require("fs");
 
 router.get("/", (req, res) => {
-  FileModel.find({ }, (error, files) =>{
+  FileModel.find({ }, [], {sort: {upload_time: -1}}, (error, files) =>{
     if(error) return res.status(500).json({error: "Failed to get files"});
 
     return res.json(files);
+  });
+});
+
+router.get("/:id", (req, res) => {
+  FileModel.findOne({_id: req.params.id}, (error, file) => {
+    if(error) return res.status(500).json({error: "Could not find file"});
+    
+    if(req.query.dl == '1') {
+      let filePath = "uploads/" + file.location;
+
+      if(fs.existsSync(filePath)) {
+        return res.download(filePath, file.filename);
+      }
+    }
+
+    return res.json(file);
   });
 });
 
@@ -35,6 +52,7 @@ router.post("/new", (req, res) => {
     fileDocument.filename = newFile.name;
     fileDocument.location = uploadLocation;
     fileDocument.size = newFile.size;
+    fileDocument.upload_time = Date.now();
 
     fileDocument.save(error => {
       if(error) return res.status(500).json({error: "Failed to save document"});
