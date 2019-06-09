@@ -4,12 +4,13 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const config = require("./config");
 const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
-const passportJWT = require('passport-jwt');
+const LocalStrategy = require("passport-local").Strategy;
+const passportJWT = require("passport-jwt");
 const JWTStrategy = passportJWT.Strategy;
-const bcrypt = require('bcrypt');
-const fileUpload = require('express-fileupload');
+const bcrypt = require("bcrypt");
+const fileUpload = require("express-fileupload");
 const cors = require("cors");
+const path = require("path")
 
 const UserModel = require("./models/user");
 
@@ -22,6 +23,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(fileUpload({createParentPath: true}));
+app.use(express.static(path.join(__dirname, "build")));
 
 // Passport stuff
 passport.use(new LocalStrategy(async (username, password, done) => {
@@ -57,16 +59,11 @@ passport.use(new JWTStrategy({
 const usersRoute = require("./routes/users");
 const filesRoute = require("./routes/files");
 
-app.use("/users", usersRoute);
-app.use("/files", filesRoute);
+app.use("/api/users", usersRoute);
+app.use("/api/files", filesRoute);
 
-app.get("/", (req, res) => {
-
-  let output = "<h1>File Sharing Website</h1>";
-  output += "<p>More info will be available soon.</p>";
-  output += "<p>" + req.connection.remoteAddress + "</p>";
-
-  res.send(output);
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
 });
 
 app.listen(9000);
