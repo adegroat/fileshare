@@ -15,6 +15,10 @@ const FileSchema = mongoose.model('File', new mongoose.Schema({
   size: {
     type: Number,
     required: true
+  },
+  upload_time: {
+    type: Number,
+    required: true
   }
 }));
 
