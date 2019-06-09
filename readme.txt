@@ -1,0 +1,1 @@
+Simple file sharing app using the MERN stack.
