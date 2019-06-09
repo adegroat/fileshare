@@ -5,7 +5,7 @@ const FileSchema = mongoose.model('File', new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     required: true
   },
-  fileName: {
+  filename: {
     type: String,
     required: true,
   },

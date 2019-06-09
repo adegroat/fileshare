@@ -49,7 +49,7 @@ router.post('/auth', (req, res) => {
 });
 
 // Anything below will require a valid JWT
-router.use(passport.authenticate('jwt', {session: false}));
+// router.use(passport.authenticate('jwt', {session: false}));
 
 router.get("/", (req, res) => {
   // console.log(req.params.uid);

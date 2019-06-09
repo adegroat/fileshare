@@ -7,3 +7,4 @@ curl -d "username=alex&password=mypassword" -X POST http://localhost:3000/users/
 
 Upload file named "myfile.txt"
 curl -F "file=@myfile.txt" -F "jwt=JWT" localhost:3000/files/new
+curl -F "file=@/home/alex/sim.js" -F "jwt=eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiI1Y2YyYjA1NDZjZjAxNDdiNzcwM2FmZmQiLCJleHBpcmVzIjoxNTU5NTEzOTgxNzc0fQ.ikEwCXKQtPQzhCqG-vIj1ZGsraHrcw6BzYgGI9fJBc4" localhost:3000/files/new
