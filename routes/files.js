@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const config = require("../config");
 
 const passport = require("passport");
 const FileModel = require("../models/file");
@@ -41,6 +42,15 @@ router.post("/new", (req, res) => {
   let newFile = req.files.file;
   let storedName = md5(Date.now() + req.connection.remoteAddress);
   let uploadLocation = req.user === undefined ? storedName : (req.user.user_id + "/" + storedName); 
+
+  if(newFile.size > config.MAX_UPLOAD_SIZE) {
+    return res.status(400).json({
+      error: {
+        message: "File size too large",
+        max_file_size: config.MAX_UPLOAD_SIZE
+      }
+    });
+  }
 
   newFile.mv("uploads/" + uploadLocation, (error) => {
     if(error) {
