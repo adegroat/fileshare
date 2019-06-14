@@ -10,7 +10,6 @@ const JWTStrategy = passportJWT.Strategy;
 const bcrypt = require("bcrypt");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
-// const path = require("path")
 
 const UserModel = require("./models/user");
 
@@ -23,7 +22,6 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use(fileUpload({createParentPath: true}));
-// app.use(express.static(path.join(__dirname, "build")));
 
 // Passport stuff
 passport.use(new LocalStrategy(async (username, password, done) => {
